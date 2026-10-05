@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leave Management Portal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; padding: 30px 15px; background: #eef2f5; margin: 0; }
-        .card { background: white; border-radius: 12px; padding: 25px 20px; max-width: 450px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; padding: 20px 15px; background: #eef2f5; margin: 0; }
+        .card { background: white; border-radius: 12px; padding: 25px 20px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); box-sizing: border-box; }
         .title { font-size: 15pt; font-weight: bold; color: #2c3e50; margin-bottom: 5px; text-transform: uppercase; }
         .subtitle { font-size: 9.5pt; color: #7f8c8d; margin-bottom: 18px; }
         
@@ -19,6 +20,11 @@
         .btn-approve { background-color: #27ae60; }
         .btn-forward { background-color: #2980b9; }
         .btn-reject { background-color: #e74c3c; }
+
+        /* Hidden Printable Paper */
+        #pdfRenderPaper { display: none; text-align: left; background: #fff; padding: 20px; border: 2px solid #2c3e50; font-size: 10pt; line-height: 1.5; }
+        #pdfRenderPaper table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        #pdfRenderPaper th, #pdfRenderPaper td { border: 1px solid #2c3e50; padding: 6px; text-align: center; }
     </style>
 </head>
 <body>
@@ -30,12 +36,43 @@
     <div class="info-box">
         <b>Staff Name:</b> <span id="dispStaff">-</span><br>
         <b>Branch:</b> <span id="dispBranch">-</span><br>
+        <b>Application Date:</b> <span id="dispDate">-</span><br>
+        <b>Reason:</b> <span id="dispReason">-</span><br>
         <b>Portal Access:</b> <span id="dispRole" style="color: #2980b9; font-weight: bold;">-</span>
     </div>
 
     <div id="actionArea" class="btn-group">
-        <!-- Buttons loaded dynamically -->
+        <!-- Dynamic Buttons -->
     </div>
+</div>
+
+<!-- Hidden PDF Template for Manager Download -->
+<div id="pdfRenderPaper">
+    <div style="text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; margin-bottom: 15px;">
+        <h2 style="margin:0; font-size: 20pt; text-transform: uppercase;">Blockbuster Cineplexes</h2>
+        <h4 style="margin:0; color: #e74c3c; letter-spacing: 2px;">LEAVE APPLICATION FORM</h4>
+    </div>
+    <p><b>Branch:</b> <span id="pdfBranch"></span> | <b>Date:</b> <span id="pdfDate"></span></p>
+    <p><b>Staff Name:</b> <span id="pdfStaff"></span> | <b>Employee ID:</b> <span id="pdfID"></span></p>
+    <p><b>Contact No:</b> <span id="pdfTel"></span></p>
+    <p><b>Contact Address While on Leave:</b> <span id="pdfAddr"></span></p>
+    <p><b>Reason for Leave:</b> <span id="pdfReason"></span></p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Leave Type</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Days</th>
+            </tr>
+        </thead>
+        <tbody id="pdfTableBody">
+            <!-- Dynamic Leave Rows -->
+        </tbody>
+    </table>
+    
+    <p style="margin-top: 15px;"><b>Expected Re-joining Date:</b> <span id="pdfRejoining"></span></p>
 </div>
 
 <script>
@@ -43,20 +80,72 @@
     const role = (urlParams.get('role') || 'cm').toLowerCase();
     const staff = urlParams.get('staff') || 'Staff';
     const branch = urlParams.get('branch') || 'Cineplex';
+    const date = urlParams.get('date') || '-';
+    const id = urlParams.get('id') || '-';
+    const tel = urlParams.get('tel') || '-';
+    const addr = urlParams.get('addr') || '-';
+    const reason = urlParams.get('reason') || '-';
+    const rejoining = urlParams.get('rejoining') || '-';
+    
+    const al = urlParams.get('al') || '';
+    const mc = urlParams.get('mc') || '';
+    const el = urlParams.get('el') || '';
 
     const gmPhone = "601116316020"; 
     const githubBaseUrl = "https://george191919.github.io/leave-application/status.html";
-    const mainFormUrl = "https://george191919.github.io/leave-application/";
 
     document.getElementById('dispStaff').innerText = staff;
     document.getElementById('dispBranch').innerText = branch;
+    document.getElementById('dispDate').innerText = date;
+    document.getElementById('dispReason').innerText = reason;
     document.getElementById('dispRole').innerText = (role === 'gm') ? "General Manager / HR" : "Cinema Manager";
+
+    // Populate PDF Template
+    document.getElementById('pdfBranch').innerText = branch;
+    document.getElementById('pdfDate').innerText = date;
+    document.getElementById('pdfStaff').innerText = staff;
+    document.getElementById('pdfID').innerText = id;
+    document.getElementById('pdfTel').innerText = tel;
+    document.getElementById('pdfAddr').innerText = addr;
+    document.getElementById('pdfReason').innerText = reason;
+    document.getElementById('pdfRejoining').innerText = rejoining;
+
+    var tbody = document.getElementById('pdfTableBody');
+    tbody.innerHTML = '';
+    
+    function addRow(type, val) {
+        if(val) {
+            var parts = val.split('|');
+            tbody.innerHTML += `<tr><td>${type}</td><td>${parts[0] || '-'}</td><td>${parts[1] || '-'}</td><td>${parts[2] || '-'}</td></tr>`;
+        }
+    }
+    addRow('Annual Leave', al);
+    addRow('Medical Leave', mc);
+    addRow('Emergency Leave', el);
+    if(!al && !mc && !el) {
+        tbody.innerHTML = '<tr><td colspan="4">No specific leave details provided.</td></tr>';
+    }
+
+    function downloadFilledPDF() {
+        var element = document.getElementById('pdfRenderPaper');
+        element.style.display = 'block';
+        var opt = {
+            margin:       10,
+            filename:     'Completed_Leave_Form_' + staff + '.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save().then(function() {
+            element.style.display = 'none';
+        });
+    }
 
     var actionArea = document.getElementById('actionArea');
 
     if (role === 'cm') {
-        // CINEMA MANAGER OPTIONS
-        var gmLink = githubBaseUrl + "?role=gm&staff=" + encodeURIComponent(staff) + "&branch=" + encodeURIComponent(branch);
+        var currentParams = window.location.search.replace('role=cm', 'role=gm');
+        var gmLink = githubBaseUrl + currentParams;
         
         var approveStaffMsg = "Hello " + staff + ", your leave request for *" + branch + "* has been *APPROVED* by Cinema Manager. ✅";
         var rejectStaffMsg = "Hello " + staff + ", your leave request for *" + branch + "* has been *REJECTED* by Cinema Manager. ❌";
@@ -69,9 +158,9 @@
                         "👉 " + gmLink;
 
         actionArea.innerHTML = `
-            <a class="btn btn-pdf-dl" href="${mainFormUrl}" target="_blank">
-                📥 View / Download Application Form PDF
-            </a>
+            <button class="btn btn-pdf-dl" onclick="downloadFilledPDF()">
+                📥 Download Completed Staff PDF
+            </button>
             <a class="btn btn-approve" href="https://api.whatsapp.com/send?text=${encodeURIComponent(approveStaffMsg)}">
                 ✅ Approved - Send to Staff
             </a>
@@ -83,14 +172,13 @@
             </a>
         `;
     } else if (role === 'gm') {
-        // GENERAL MANAGER / HR OPTIONS
         var finalApproveMsg = "Hello " + staff + ", your leave application for *" + branch + "* has received *FINAL APPROVAL* from General Manager / HR. ✅%0A%0ABlockbuster Cineplexes";
         var finalRejectMsg = "Hello " + staff + ", your leave application for *" + branch + "* has been *REJECTED* by General Manager / HR. ❌%0A%0ABlockbuster Cineplexes";
 
         actionArea.innerHTML = `
-            <a class="btn btn-pdf-dl" href="${mainFormUrl}" target="_blank">
-                📥 View / Download Application Form PDF
-            </a>
+            <button class="btn btn-pdf-dl" onclick="downloadFilledPDF()">
+                📥 Download Completed Staff PDF
+            </button>
             <a class="btn btn-approve" href="https://api.whatsapp.com/send?text=${encodeURIComponent(finalApproveMsg)}">
                 ✅ Final Approve
             </a>

@@ -30,8 +30,7 @@
     const branch = urlParams.get('branch') || 'Cineplex';
 
     const gmPhone = "601116316020"; 
-
-    const githubBaseUrl = window.location.href.split('?')[0];
+    const githubBaseUrl = "https://george191919.github.io/leave-application/status.html";
 
     var badge = document.getElementById('statusBadge');
     var desc = document.getElementById('statusDesc');
@@ -43,8 +42,8 @@
             badge.className = "status-badge approved";
             desc.innerText = "Leave request for " + staff + " (" + branch + ") has been RECOMMENDED. Forwarding to General Manager / HR for Final Approval.";
 
-            var gmApproveLink = githubBaseUrl + "?role=gm&status=Approved&staff=" + encodeURIComponent(staff) + "&branch=" + encodeURIComponent(branch);
-            var gmRejectLink = githubBaseUrl + "?role=gm&status=Rejected&staff=" + encodeURIComponent(staff) + "&branch=" + encodeURIComponent(branch);
+            var gmApproveLink = githubBaseUrl + "?role=gm&status=approved&staff=" + encodeURIComponent(staff) + "&branch=" + encodeURIComponent(branch);
+            var gmRejectLink = githubBaseUrl + "?role=gm&status=rejected&staff=" + encodeURIComponent(staff) + "&branch=" + encodeURIComponent(branch);
 
             var gmMessage = "📄 *LEAVE APPLICATION (STEP 2: FINAL APPROVAL)*%0A%0A" +
                             "• *Branch:* " + branch + "%0A" +

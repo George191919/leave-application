@@ -6,21 +6,21 @@
     <title>Leave Management Portal</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; text-align: center; padding: 20px 10px; background: #0f172a; color: #f8fafc; margin: 0; }
-        .card { background: #1e293b; border-radius: 12px; padding: 20px 16px; max-width: 440px; margin: 0 auto; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); border: 1px solid #334155; box-sizing: border-box; }
-        .title { font-size: 15pt; font-weight: bold; color: #38bdf8; text-transform: uppercase; margin-bottom: 4px; }
-        .subtitle { font-size: 8.5pt; color: #94a3b8; margin-bottom: 16px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; text-align: center; padding: 20px 10px; background: #f0f4f8; color: #1e293b; margin: 0; }
+        .card { background: #ffffff; border-radius: 12px; padding: 20px 16px; max-width: 440px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #cbd5e1; box-sizing: border-box; }
+        .title { font-size: 15pt; font-weight: bold; color: #0284c7; text-transform: uppercase; margin-bottom: 4px; }
+        .subtitle { font-size: 8.5pt; color: #64748b; margin-bottom: 16px; }
         
-        .info-box { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px; text-align: left; margin-bottom: 16px; font-size: 9pt; color: #cbd5e1; line-height: 1.6; }
+        .info-box { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; text-align: left; margin-bottom: 16px; font-size: 9pt; color: #334155; line-height: 1.6; }
         
         .btn-group { display: flex; flex-direction: column; gap: 10px; }
         .btn { display: block; padding: 12px; text-decoration: none; font-weight: bold; border-radius: 6px; font-size: 9.5pt; color: white; border: none; cursor: pointer; text-align: center; transition: transform 0.1s; }
         .btn:active { transform: scale(0.98); }
         
-        .btn-pdf-dl { background-color: #8b5cf6; }
-        .btn-approve { background-color: #22c55e; }
-        .btn-forward { background-color: #3b82f6; }
-        .btn-reject { background-color: #ef4444; }
+        .btn-pdf-dl { background-color: #7c3aed; }
+        .btn-approve { background-color: #16a34a; }
+        .btn-forward { background-color: #0284c7; }
+        .btn-reject { background-color: #dc2626; }
 
         #pdfRenderPaper { display: none; text-align: left; background: #fff; color: #000; padding: 15px; border: 1.5px solid #2d3748; font-size: 9pt; line-height: 1.4; }
         #pdfRenderPaper table { width: 100%; border-collapse: collapse; margin-top: 12px; }
@@ -38,7 +38,7 @@
         <b>Branch:</b> <span id="dispBranch">-</span><br>
         <b>Application Date:</b> <span id="dispDate">-</span><br>
         <b>Reason:</b> <span id="dispReason">-</span><br>
-        <b>Portal Access:</b> <span id="dispRole" style="color: #38bdf8; font-weight: bold;">-</span>
+        <b>Portal Access:</b> <span id="dispRole" style="color: #0284c7; font-weight: bold;">-</span>
     </div>
 
     <div id="actionArea" class="btn-group">
@@ -49,7 +49,7 @@
 <div id="pdfRenderPaper">
     <div style="text-align: center; border-bottom: 2px solid #2d3748; padding-bottom: 8px; margin-bottom: 12px;">
         <h3 style="margin:0; font-size: 16pt; text-transform: uppercase;">Blockbuster Cineplexes</h3>
-        <h5 style="margin:0; color: #e53e3e; letter-spacing: 1px;">LEAVE APPLICATION FORM</h5>
+        <h5 style="margin:0; color: #dc2626; letter-spacing: 1px;">LEAVE APPLICATION FORM</h5>
     </div>
     <p><b>Branch:</b> <span id="pdfBranch"></span> | <b>Date:</b> <span id="pdfDate"></span></p>
     <p><b>Staff Name:</b> <span id="pdfStaff"></span> | <b>ID:</b> <span id="pdfID"></span></p>
@@ -162,7 +162,7 @@
     }
 
     function handleRejection(approverRole) {
-        var rejectReason = prompt("Please enter reason for rejection (நிராகரிப்பதற்கான காரணத்தை உள்ளிடவும்):");
+        var rejectReason = prompt("Please enter reason for rejection:");
         if (rejectReason !== null && rejectReason.trim() !== "") {
             var msg = "Hello " + staff + ", your leave request for " + branch + " has been REJECTED by " + approverRole + ".\n\n❌ *Reason:* " + rejectReason;
             window.location.href = "https://api.whatsapp.com/send?text=" + encodeURIComponent(msg);
@@ -207,7 +207,7 @@
             </button>
             <button class="btn btn-approve" onclick="saveApprovedLeaveToStorage(); window.location.href='https://api.whatsapp.com/send?text=${encodeURIComponent(finalApproveMsg)}';">
                 ✅ Final Approve
-            </button>
+            </a>
             <button class="btn btn-reject" onclick="handleRejection('General Manager / HR')">
                 ❌ Reject Request
             </button>

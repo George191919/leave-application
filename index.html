@@ -29,7 +29,6 @@
     input:focus, select:focus, textarea:focus { border-color: #3182ce; outline: none; }
     textarea { resize: vertical; min-height: 50px; }
     
-    /* Responsive Table Container */
     .table-responsive { width: 100%; overflow-x: auto; margin: 10px 0; -webkit-overflow-scrolling: touch; }
     table.leave-table { width: 100%; border-collapse: collapse; min-width: 320px; }
     table.leave-table th, table.leave-table td { border: 1px solid #cbd5e0; padding: 5px 4px; text-align: center; font-size: 8.5pt; }
@@ -208,14 +207,24 @@
     function generatePDF() {
         var element = document.getElementById('formPaper');
         var name = document.getElementById('staffName').value || 'Staff';
+        
+        var originalWidth = element.style.width;
+        element.style.width = "650px";
+
         var opt = {
-            margin:       5,
+            margin:       [5, 5, 5, 5],
             filename:     'Leave_Form_' + name + '.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
+            html2canvas:  { scale: 2, useCORS: true, logging: false },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
-        html2pdf().set(opt).from(element).save();
+
+        html2pdf().set(opt).from(element).save().then(function() {
+            element.style.width = originalWidth;
+        }).catch(function(err) {
+            element.style.width = originalWidth;
+            alert("PDF Generation Error: " + err);
+        });
     }
 
     function sendToCinemaManager() {

@@ -41,7 +41,7 @@
     </div>
 
     <div id="actionArea" class="btn-group">
-        <!-- Action Buttons Dynamic -->
+        <!-- Action Buttons -->
     </div>
 </div>
 
@@ -123,16 +123,25 @@
 
     function downloadFilledPDF() {
         var element = document.getElementById('pdfRenderPaper');
+        
         element.style.display = 'block';
+        element.style.width = "650px";
+
         var opt = {
-            margin:       8,
+            margin:       [8, 8, 8, 8],
             filename:     'Completed_Leave_Form_' + staff + '.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
+            html2canvas:  { scale: 2, useCORS: true, logging: false },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
+
         html2pdf().set(opt).from(element).save().then(function() {
             element.style.display = 'none';
+            element.style.width = "auto";
+        }).catch(function(err) {
+            element.style.display = 'none';
+            element.style.width = "auto";
+            alert("PDF Download Error: " + err);
         });
     }
 

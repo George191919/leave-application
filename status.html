@@ -24,8 +24,8 @@
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const role = urlParams.get('role'); 
-    const status = urlParams.get('status') || 'Updated';
+    const role = urlParams.get('role') ? urlParams.get('role').toLowerCase() : ''; 
+    const status = urlParams.get('status') ? urlParams.get('status').toLowerCase() : '';
     const staff = urlParams.get('staff') || 'Staff';
     const branch = urlParams.get('branch') || 'Cineplex';
 
@@ -38,7 +38,7 @@
     var actionArea = document.getElementById('actionArea');
 
     if (role === 'cm') {
-        if (status === 'Recommended') {
+        if (status === 'recommended' || status === 'approved') {
             badge.innerText = "Recommended by Cinema Manager";
             badge.className = "status-badge approved";
             desc.innerText = "Leave request for " + staff + " (" + branch + ") has been RECOMMENDED. Forwarding to General Manager / HR for Final Approval.";
@@ -65,9 +65,15 @@
             actionArea.innerHTML = '<a class="btn-wa" href="https://api.whatsapp.com/send?text=' + encodeURIComponent(staffReplyMsg) + '">💬 Notify Staff via WhatsApp</a>';
         }
     } else if (role === 'gm') {
-        badge.innerText = "Final Status: " + status;
-        badge.className = "status-badge " + (status.toLowerCase() === 'approved' ? 'approved' : 'rejected');
-        desc.innerText = "Leave application for " + staff + " (" + branch + ") has been " + status.toUpperCase() + " by General Manager / HR.";
+        if (status === 'approved') {
+            badge.innerText = "Final Status: Approved";
+            badge.className = "status-badge approved";
+            desc.innerText = "Leave application for " + staff + " (" + branch + ") has been APPROVED by General Manager / HR.";
+        } else {
+            badge.innerText = "Final Status: Rejected";
+            badge.className = "status-badge rejected";
+            desc.innerText = "Leave application for " + staff + " (" + branch + ") has been REJECTED by General Manager / HR.";
+        }
 
         var finalReplyMsg = "Hello " + staff + ", your leave application for " + branch + " has been *" + status.toUpperCase() + "* by General Manager / HR.%0A%0ABlockbuster Cineplexes";
         actionArea.innerHTML = '<a class="btn-wa" href="https://api.whatsapp.com/send?text=' + encodeURIComponent(finalReplyMsg) + '">💬 Send Final Decision to Staff</a>';

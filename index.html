@@ -117,22 +117,22 @@
             </thead>
             <tbody>
                 <tr>
-                    <td style="text-align: left;"><input type="checkbox" name="leaveType" value="Annual Leave"> Annual Leave</td>
-                    <td><input type="date"></td>
-                    <td><input type="date"></td>
-                    <td><input type="number"></td>
+                    <td style="text-align: left;"><input type="checkbox" id="annualCb" value="Annual Leave"> Annual Leave</td>
+                    <td><input type="date" id="annualFrom"></td>
+                    <td><input type="date" id="annualTo"></td>
+                    <td><input type="number" id="annualDays"></td>
                 </tr>
                 <tr>
-                    <td style="text-align: left;"><input type="checkbox" name="leaveType" value="Medical Leave"> Medical Leave</td>
-                    <td><input type="date"></td>
-                    <td><input type="date"></td>
-                    <td><input type="number"></td>
+                    <td style="text-align: left;"><input type="checkbox" id="mcCb" value="Medical Leave"> Medical Leave</td>
+                    <td><input type="date" id="mcFrom"></td>
+                    <td><input type="date" id="mcTo"></td>
+                    <td><input type="number" id="mcDays"></td>
                 </tr>
                 <tr>
-                    <td style="text-align: left;"><input type="checkbox" name="leaveType" value="Emergency Leave"> Emergency Leave</td>
-                    <td><input type="date"></td>
-                    <td><input type="date"></td>
-                    <td><input type="number"></td>
+                    <td style="text-align: left;"><input type="checkbox" id="elCb" value="Emergency Leave"> Emergency Leave</td>
+                    <td><input type="date" id="elFrom"></td>
+                    <td><input type="date" id="elTo"></td>
+                    <td><input type="number" id="elDays"></td>
                 </tr>
             </tbody>
         </table>
@@ -164,7 +164,7 @@
     </div>
 
     <div class="btn-group">
-        <button class="btn btn-pdf" onclick="generatePDF()">📄 Download PDF</button>
+        <button class="btn btn-pdf" onclick="generatePDF()">📄 Download PDF (Local)</button>
         <button class="btn btn-wa" onclick="sendToCinemaManager()">💬 Send to Cinema Manager</button>
     </div>
 </div>
@@ -222,12 +222,36 @@
         var cmPhonePelangi = "601164117015";  
 
         var branch = document.getElementById('cinemaBranch').value;
+        var date = document.getElementById('applyDate').value;
         var name = document.getElementById('staffName').value || 'Staff';
         var id = document.getElementById('staffID').value || 'N/A';
+        var tel = document.getElementById('telNo').value || 'N/A';
+        var addr = document.getElementById('contactWhileLeave').value || 'N/A';
         var reason = document.getElementById('leaveReason').value || 'N/A';
+        var rejoining = document.getElementById('rejoiningDate').value || 'N/A';
+
+        // Leave Types Data
+        var al = document.getElementById('annualCb').checked ? (document.getElementById('annualFrom').value + '|' + document.getElementById('annualTo').value + '|' + document.getElementById('annualDays').value) : '';
+        var mc = document.getElementById('mcCb').checked ? (document.getElementById('mcFrom').value + '|' + document.getElementById('mcTo').value + '|' + document.getElementById('mcDays').value) : '';
+        var el = document.getElementById('elCb').checked ? (document.getElementById('elFrom').value + '|' + document.getElementById('elTo').value + '|' + document.getElementById('elDays').value) : '';
 
         var targetPhone = (branch === "Perling Mall") ? cmPhonePerling : cmPhonePelangi;
-        var statusLink = "https://george191919.github.io/leave-application/status.html?role=cm&staff=" + encodeURIComponent(name) + "&branch=" + encodeURIComponent(branch);
+        
+        // Build URL parameters containing filled data
+        var params = "?role=cm" +
+            "&staff=" + encodeURIComponent(name) +
+            "&branch=" + encodeURIComponent(branch) +
+            "&date=" + encodeURIComponent(date) +
+            "&id=" + encodeURIComponent(id) +
+            "&tel=" + encodeURIComponent(tel) +
+            "&addr=" + encodeURIComponent(addr) +
+            "&reason=" + encodeURIComponent(reason) +
+            "&rejoining=" + encodeURIComponent(rejoining) +
+            "&al=" + encodeURIComponent(al) +
+            "&mc=" + encodeURIComponent(mc) +
+            "&el=" + encodeURIComponent(el);
+
+        var statusLink = "https://george191919.github.io/leave-application/status.html" + params;
 
         generatePDF();
 
@@ -236,9 +260,8 @@
                       "• *Staff Name:* " + name + "%0A" +
                       "• *Employee ID:* " + id + "%0A" +
                       "• *Reason:* " + reason + "%0A%0A" +
-                      "📌 *Note:* Application PDF generated. Manager can download via approval link below.%0A%0A" +
                       "------------------------------------%0A" +
-                      "⚡ *CINEMA MANAGER ACTION LINK:*%0A" +
+                      "⚡ *CINEMA MANAGER ACTION & PDF LINK:*%0A" +
                       "👉 " + statusLink;
 
         var whatsappUrl = "https://api.whatsapp.com/send?phone=" + targetPhone + "&text=" + message;

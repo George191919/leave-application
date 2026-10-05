@@ -7,49 +7,54 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
     * { box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f6f8; margin: 0; padding: 8px; color: #2d3748; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; margin: 0; padding: 12px 8px; color: #f8fafc; }
     
-    .paper { background: #fff; width: 100%; max-width: 650px; margin: 0 auto; padding: 12px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    .form-container { width: 100%; border: 1px solid #cbd5e0; padding: 10px; border-radius: 6px; }
-    .header { text-align: center; border-bottom: 2px solid #2d3748; padding-bottom: 8px; margin-bottom: 12px; }
-    .doc-ref { font-size: 7.5pt; color: #718096; }
-    .logo-title { font-size: 18pt; font-weight: 800; color: #1a202c; text-transform: uppercase; margin: 0; }
-    .logo-sub { font-size: 8.5pt; font-weight: bold; letter-spacing: 2px; color: #e53e3e; text-transform: uppercase; }
-    .form-title { font-size: 10.5pt; font-weight: bold; margin-top: 6px; background: #2d3748; color: #fff; padding: 4px; text-transform: uppercase; letter-spacing: 1px; }
+    .paper { background: #1e293b; width: 100%; max-width: 650px; margin: 0 auto; padding: 16px; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); border: 1px solid #334155; }
+    .form-container { width: 100%; border: 1px solid #475569; padding: 12px; border-radius: 8px; background: #0f172a; }
+    .header { text-align: center; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; margin-bottom: 14px; }
+    .doc-ref { font-size: 7.5pt; color: #94a3b8; }
+    .logo-title { font-size: 20pt; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin: 0; letter-spacing: 1px; }
+    .logo-sub { font-size: 8.5pt; font-weight: bold; letter-spacing: 2px; color: #ef4444; text-transform: uppercase; }
+    .form-title { font-size: 11pt; font-weight: bold; margin-top: 8px; background: #1e293b; color: #f8fafc; padding: 6px; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; border: 1px solid #334155; }
     
-    .form-group { margin-bottom: 10px; }
-    .form-group label { display: block; font-size: 9pt; font-weight: bold; margin-bottom: 4px; color: #2d3748; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 8.5pt; font-weight: 600; margin-bottom: 5px; color: #cbd5e1; }
     
-    .row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; }
     .col { flex: 1; min-width: 140px; }
     
     input[type="text"], input[type="date"], input[type="number"], select, textarea {
-        width: 100%; padding: 8px; border: 1px solid #cbd5e0; border-radius: 4px; font-size: 9.5pt; font-family: inherit; background: #fff; box-sizing: border-box;
+        width: 100%; padding: 10px; border: 1px solid #334155; border-radius: 6px; font-size: 9.5pt; font-family: inherit; background: #1e293b; color: #f8fafc; box-sizing: border-box; transition: all 0.2s;
     }
-    input:focus, select:focus, textarea:focus { border-color: #3182ce; outline: none; }
+    input:focus, select:focus, textarea:focus { border-color: #38bdf8; outline: none; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
     textarea { resize: vertical; min-height: 50px; }
     
-    .table-responsive { width: 100%; overflow-x: auto; margin: 10px 0; -webkit-overflow-scrolling: touch; }
-    table.leave-table { width: 100%; border-collapse: collapse; min-width: 320px; }
-    table.leave-table th, table.leave-table td { border: 1px solid #cbd5e0; padding: 5px 4px; text-align: center; font-size: 8.5pt; }
-    table.leave-table th { background: #edf2f7; color: #2d3748; }
-    table.leave-table input[type="text"], table.leave-table input[type="date"], table.leave-table input[type="number"] { padding: 4px; font-size: 8pt; }
+    .table-responsive { width: 100%; overflow-x: auto; margin: 12px 0; -webkit-overflow-scrolling: touch; }
+    table.leave-table, table.approved-table { width: 100%; border-collapse: collapse; min-width: 320px; }
+    table.leave-table th, table.leave-table td, table.approved-table th, table.approved-table td { border: 1px solid #334155; padding: 6px 4px; text-align: center; font-size: 8.5pt; }
+    table.leave-table th, table.approved-table th { background: #1e293b; color: #38bdf8; font-weight: bold; }
     
-    canvas#sigCanvas { border: 1px dashed #a0aec0; background-color: #f7fafc; cursor: crosshair; touch-action: none; width: 100%; height: 75px; border-radius: 4px; }
-    .btn-clear { font-size: 8pt; padding: 4px 8px; background: #e53e3e; color: #fff; border: none; border-radius: 3px; cursor: pointer; margin-top: 4px; font-weight: bold; }
+    canvas#sigCanvas { border: 1px dashed #64748b; background-color: #1e293b; cursor: crosshair; touch-action: none; width: 100%; height: 80px; border-radius: 6px; }
+    .btn-clear { font-size: 8pt; padding: 4px 10px; background: #ef4444; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 4px; font-weight: bold; }
     
-    .attached-preview { margin-top: 10px; border: 1px dashed #cbd5e0; padding: 8px; text-align: center; background: #f7fafc; border-radius: 4px; }
+    .attached-preview { margin-top: 10px; border: 1px dashed #475569; padding: 8px; text-align: center; background: #1e293b; border-radius: 6px; }
     .attached-preview img { max-width: 100%; max-height: 180px; display: none; margin: 6px auto 0 auto; border-radius: 4px; }
 
-    .app-footer { width: 100%; max-width: 650px; margin: 10px auto; background: #fff; padding: 12px; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    .btn-group { display: flex; gap: 8px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
-    .btn { color: white; border: none; padding: 10px 14px; font-size: 9.5pt; font-weight: bold; border-radius: 5px; cursor: pointer; flex: 1; min-width: 140px; }
-    .btn-wa { background-color: #25D366; }
-    .btn-pdf { background-color: #e53e3e; }
+    .approved-section { margin-top: 15px; border-top: 2px dashed #3b82f6; padding-top: 10px; text-align: left; }
+    .approved-title { font-size: 9.5pt; font-weight: bold; color: #22c55e; margin-bottom: 8px; text-transform: uppercase; }
+
+    .app-footer { width: 100%; max-width: 650px; margin: 14px auto; background: #1e293b; padding: 14px; border-radius: 12px; text-align: center; border: 1px solid #334155; }
+    .btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+    .btn { color: white; border: none; padding: 12px 16px; font-size: 9.5pt; font-weight: bold; border-radius: 6px; cursor: pointer; flex: 1; min-width: 140px; transition: transform 0.1s; }
+    .btn:active { transform: scale(0.98); }
+    .btn-wa { background-color: #22c55e; }
+    .btn-pdf { background-color: #ef4444; }
 
     @media print {
-        .app-footer, .btn-clear { display: none !important; }
-        .paper { box-shadow: none; padding: 0; }
+        .app-footer, .btn-clear, .approved-section { display: none !important; }
+        .paper { box-shadow: none; padding: 0; background: #fff; color: #000; }
+        .form-container { background: #fff; border-color: #000; }
+        input, select, textarea { background: #fff !important; color: #000 !important; border-color: #ccc !important; }
     }
 </style>
 </head>
@@ -67,7 +72,7 @@
         <div class="row">
             <div class="col form-group">
                 <label>Branch / Location:</label>
-                <select id="cinemaBranch">
+                <select id="cinemaBranch" onchange="updateStaffList()">
                     <option value="Perling Mall">Perling Mall</option>
                     <option value="Pelangi Leisure Mall">Pelangi Leisure Mall</option>
                 </select>
@@ -80,12 +85,14 @@
 
         <div class="row">
             <div class="col form-group">
-                <label>Staff Name:</label>
-                <input type="text" id="staffName" placeholder="Full Name">
+                <label>Select Staff Name:</label>
+                <select id="staffName" onchange="autoFillStaffID()">
+                    <option value="">-- Select Staff --</option>
+                </select>
             </div>
             <div class="col form-group">
                 <label>Employee ID:</label>
-                <input type="text" id="staffID" placeholder="e.g. BC-102">
+                <input type="text" id="staffID" readonly placeholder="Auto-filled">
             </div>
         </div>
 
@@ -109,30 +116,30 @@
             <table class="leave-table">
                 <thead>
                     <tr>
-                        <th style="width: 30%;">TYPE</th>
+                        <th style="width: 28%;">TYPE</th>
                         <th>FROM</th>
                         <th>TO</th>
-                        <th style="width: 15%;">DAYS</th>
+                        <th style="width: 18%;">DAYS</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td style="text-align: left;"><input type="checkbox" id="annualCb"> Annual</td>
-                        <td><input type="date" id="annualFrom"></td>
-                        <td><input type="date" id="annualTo"></td>
-                        <td><input type="number" id="annualDays"></td>
+                        <td><input type="date" id="annualFrom" onchange="calculateDays('annual')"></td>
+                        <td><input type="date" id="annualTo" onchange="calculateDays('annual')"></td>
+                        <td><input type="number" id="annualDays" readonly placeholder="0"></td>
                     </tr>
                     <tr>
                         <td style="text-align: left;"><input type="checkbox" id="mcCb"> Medical</td>
-                        <td><input type="date" id="mcFrom"></td>
-                        <td><input type="date" id="mcTo"></td>
-                        <td><input type="number" id="mcDays"></td>
+                        <td><input type="date" id="mcFrom" onchange="calculateDays('mc')"></td>
+                        <td><input type="date" id="mcTo" onchange="calculateDays('mc')"></td>
+                        <td><input type="number" id="mcDays" readonly placeholder="0"></td>
                     </tr>
                     <tr>
                         <td style="text-align: left;"><input type="checkbox" id="elCb"> Emergency</td>
-                        <td><input type="date" id="elFrom"></td>
-                        <td><input type="date" id="elTo"></td>
-                        <td><input type="number" id="elDays"></td>
+                        <td><input type="date" id="elFrom" onchange="calculateDays('el')"></td>
+                        <td><input type="date" id="elTo" onchange="calculateDays('el')"></td>
+                        <td><input type="number" id="elDays" readonly placeholder="0"></td>
                     </tr>
                 </tbody>
             </table>
@@ -151,16 +158,35 @@
         </div>
 
         <div class="attached-preview">
-            <span id="noFileMsg" style="color:#888; font-size:8pt;">No Document attached.</span>
+            <span id="noFileMsg" style="color:#94a3b8; font-size:8pt;">No Document attached.</span>
             <img id="previewImg" src="" alt="Attachment">
+        </div>
+
+        <!-- Approved Leave History Section -->
+        <div class="approved-section">
+            <div class="approved-title">✅ Approved Leave Schedule</div>
+            <div class="table-responsive">
+                <table class="approved-table">
+                    <thead>
+                        <tr>
+                            <th>Staff Name</th>
+                            <th>Leave Dates</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="approvedTableBody">
+                        <tr><td colspan="3" style="color:#94a3b8;">No approved leaves recorded.</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="app-footer">
     <div style="margin-bottom: 8px;">
-        <label style="font-size: 9pt; font-weight: bold;">📎 Attach MC / Document:</label>
-        <input type="file" id="fileAttachment" accept="image/*" onchange="previewFile()" style="font-size: 8.5pt; margin-top:4px;">
+        <label style="font-size: 8.5pt; font-weight: bold; color: #cbd5e1;">📎 Attach MC / Document:</label>
+        <input type="file" id="fileAttachment" accept="image/*" onchange="previewFile()" style="font-size: 8.5pt; margin-top:4px; color: #94a3b8;">
     </div>
 
     <div class="btn-group">
@@ -170,16 +196,70 @@
 </div>
 
 <script>
+    const staffDatabase = {
+        "Perling Mall": [
+            { id: "1", name: "Ainaa" },
+            { id: "2", name: "Haldi" },
+            { id: "3", name: "George" },
+            { id: "4", name: "Sharrvin" },
+            { id: "5", name: "Jayanath" },
+            { id: "6", name: "Perry" },
+            { id: "7", name: "Kumar" },
+            { id: "8", name: "Alin" },
+            { id: "9", name: "Bella" },
+            { id: "10", name: "Maha" },
+            { id: "11", name: "Rafie" },
+            { id: "12", name: "Ran(PT)" }
+        ],
+        "Pelangi Leisure Mall": [
+            { id: "1", name: "Kimi" },
+            { id: "2", name: "Lala" },
+            { id: "3", name: "Krish" },
+            { id: "4", name: "Suha" },
+            { id: "5", name: "Atul" }
+        ]
+    };
+
+    function updateStaffList() {
+        var branch = document.getElementById('cinemaBranch').value;
+        var staffSelect = document.getElementById('staffName');
+        staffSelect.innerHTML = '<option value="">-- Select Staff --</option>';
+        
+        if (staffDatabase[branch]) {
+            staffDatabase[branch].forEach(function(staff) {
+                var opt = document.createElement('option');
+                opt.value = staff.name;
+                opt.setAttribute('data-id', staff.id);
+                opt.innerText = staff.name + " (ID: " + staff.id + ")";
+                staffSelect.appendChild(opt);
+            });
+        }
+        document.getElementById('staffID').value = '';
+    }
+
+    function autoFillStaffID() {
+        var staffSelect = document.getElementById('staffName');
+        var selectedOpt = staffSelect.options[staffSelect.selectedIndex];
+        var staffID = selectedOpt.getAttribute('data-id') || '';
+        document.getElementById('staffID').value = staffID;
+    }
+
     var canvas = document.getElementById('sigCanvas');
     var ctx = canvas.getContext('2d');
     var isDrawing = false;
-    ctx.strokeStyle = "#000080"; ctx.lineWidth = 2;
+    ctx.strokeStyle = "#38bdf8"; ctx.lineWidth = 2;
 
     function resizeCanvas() {
         canvas.width = canvas.parentElement.clientWidth - 2;
-        canvas.height = 75;
+        canvas.height = 80;
     }
-    window.addEventListener('load', resizeCanvas);
+
+    window.addEventListener('load', function() {
+        resizeCanvas();
+        document.getElementById('applyDate').valueAsDate = new Date();
+        updateStaffList();
+        loadApprovedLeaves();
+    });
 
     function getPos(e) {
         var rect = canvas.getBoundingClientRect();
@@ -204,10 +284,46 @@
         }
     }
 
+    function calculateDays(prefix) {
+        var fromVal = document.getElementById(prefix + 'From').value;
+        var toVal = document.getElementById(prefix + 'To').value;
+        var cb = document.getElementById(prefix + 'Cb');
+        var daysInput = document.getElementById(prefix + 'Days');
+
+        if (fromVal && toVal) {
+            var d1 = new Date(fromVal);
+            var d2 = new Date(toVal);
+            var diffTime = d2.getTime() - d1.getTime();
+            var diffDays = Math.ceil(diffTime / (1000 * 3600 * 24)) + 1;
+
+            if (diffDays > 0) {
+                daysInput.value = diffDays;
+                cb.checked = true;
+            } else {
+                daysInput.value = '';
+                cb.checked = false;
+            }
+        }
+    }
+
+    function loadApprovedLeaves() {
+        var approvedList = JSON.parse(localStorage.getItem('approvedLeaves') || '[]');
+        var tbody = document.getElementById('approvedTableBody');
+        if (approvedList.length > 0) {
+            tbody.innerHTML = '';
+            approvedList.forEach(function(item) {
+                tbody.innerHTML += `<tr>
+                    <td><b>${item.staff}</b> (${item.branch})</td>
+                    <td>${item.dates}</td>
+                    <td><span style="color:#22c55e; font-weight:bold;">${item.type}</span></td>
+                </tr>`;
+            });
+        }
+    }
+
     function generatePDF() {
         var element = document.getElementById('formPaper');
         var name = document.getElementById('staffName').value || 'Staff';
-        
         var originalWidth = element.style.width;
         element.style.width = "650px";
 
@@ -240,9 +356,22 @@
         var reason = document.getElementById('leaveReason').value || 'N/A';
         var rejoining = document.getElementById('rejoiningDate').value || 'N/A';
 
-        var al = document.getElementById('annualCb').checked ? (document.getElementById('annualFrom').value + '~' + document.getElementById('annualTo').value + '~' + document.getElementById('annualDays').value) : '';
-        var mc = document.getElementById('mcCb').checked ? (document.getElementById('mcFrom').value + '~' + document.getElementById('mcTo').value + '~' + document.getElementById('mcDays').value) : '';
-        var el = document.getElementById('elCb').checked ? (document.getElementById('elFrom').value + '~' + document.getElementById('elTo').value + '~' + document.getElementById('elDays').value) : '';
+        var alStr = '', mcStr = '', elStr = '', leaveSummary = [];
+        if(document.getElementById('annualCb').checked) {
+            var f = document.getElementById('annualFrom').value, t = document.getElementById('annualTo').value, d = document.getElementById('annualDays').value;
+            alStr = f + '~' + t + '~' + d;
+            leaveSummary.push("Annual: " + f + " to " + t + " (" + d + " days)");
+        }
+        if(document.getElementById('mcCb').checked) {
+            var f = document.getElementById('mcFrom').value, t = document.getElementById('mcTo').value, d = document.getElementById('mcDays').value;
+            mcStr = f + '~' + t + '~' + d;
+            leaveSummary.push("Medical: " + f + " to " + t + " (" + d + " days)");
+        }
+        if(document.getElementById('elCb').checked) {
+            var f = document.getElementById('elFrom').value, t = document.getElementById('elTo').value, d = document.getElementById('elDays').value;
+            elStr = f + '~' + t + '~' + d;
+            leaveSummary.push("Emergency: " + f + " to " + t + " (" + d + " days)");
+        }
 
         var targetPhone = (branch === "Perling Mall") ? cmPhonePerling : cmPhonePelangi;
         
@@ -255,22 +384,24 @@
             "&addr=" + encodeURIComponent(addr) +
             "&reason=" + encodeURIComponent(reason) +
             "&rejoining=" + encodeURIComponent(rejoining) +
-            "&al=" + encodeURIComponent(al) +
-            "&mc=" + encodeURIComponent(mc) +
-            "&el=" + encodeURIComponent(el);
+            "&al=" + encodeURIComponent(alStr) +
+            "&mc=" + encodeURIComponent(mcStr) +
+            "&el=" + encodeURIComponent(elStr);
 
         var statusLink = "https://george191919.github.io/leave-application/status.html" + queryParams;
 
         generatePDF();
 
-        var message = "NEW LEAVE APPLICATION (" + branch.toUpperCase() + ")\n\n" +
-                      "• Branch: " + branch + "\n" +
-                      "• Staff: " + name + "\n" +
-                      "• ID: " + id + "\n" +
-                      "• Reason: " + reason + "\n\n" +
+        var message = "📋 *NEW LEAVE APPLICATION*\n" +
                       "------------------------------------\n" +
-                      "CINEMA MANAGER ACTION & PDF LINK:\n" +
-                      statusLink;
+                      "🏢 *Branch:* " + branch + "\n" +
+                      "👤 *Staff:* " + name + " (ID: " + id + ")\n" +
+                      "📅 *Applied Date:* " + date + "\n" +
+                      "📝 *Reason:* " + reason + "\n\n" +
+                      "📌 *Leave Dates:*\n" + (leaveSummary.join("\n") || "Not specified") + "\n\n" +
+                      "🔄 *Re-joining Date:* " + rejoining + "\n" +
+                      "------------------------------------\n" +
+                      "🔗 *CLICK LINK TO REVIEW & APPROVE:*\n" + statusLink;
 
         var whatsappUrl = "https://api.whatsapp.com/send?phone=" + targetPhone + "&text=" + encodeURIComponent(message);
 

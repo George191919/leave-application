@@ -3,79 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leave Status Approval</title>
+    <title>Leave Management Portal</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 40px 15px; background: #f4f7f6; margin: 0; }
-        .card { background: white; border-radius: 10px; padding: 30px 20px; max-width: 420px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); box-sizing: border-box; }
-        .status-badge { font-size: 15pt; font-weight: bold; margin-bottom: 15px; }
-        .approved { color: #27ae60; }
-        .rejected { color: #e74c3c; }
-        .btn-wa { display: block; margin: 20px auto 0 auto; background: #25D366; color: white; padding: 12px 15px; text-decoration: none; font-weight: bold; border-radius: 6px; width: 100%; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; padding: 30px 15px; background: #eef2f5; margin: 0; }
+        .card { background: white; border-radius: 12px; padding: 25px 20px; max-width: 440px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); box-sizing: border-box; }
+        .title { font-size: 14pt; font-weight: bold; color: #2c3e50; margin-bottom: 5px; text-transform: uppercase; }
+        .subtitle { font-size: 9pt; color: #7f8c8d; margin-bottom: 20px; }
+        
+        .info-box { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 12px; text-align: left; margin-bottom: 20px; font-size: 9.5pt; color: #333; line-height: 1.6; }
+        
+        .btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .btn { display: block; padding: 12px 15px; text-decoration: none; font-weight: bold; border-radius: 6px; font-size: 10pt; color: white; border: none; cursor: pointer; text-align: center; }
+        
+        .btn-approve { background-color: #27ae60; }
+        .btn-forward { background-color: #2980b9; }
+        .btn-reject { background-color: #e74c3c; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <div id="statusBadge" class="status-badge">Processing...</div>
-    <p id="statusDesc" style="color: #555; line-height: 1.5;"></p>
-    
-    <div id="actionArea"></div>
+    <div class="title">Blockbuster Cineplexes</div>
+    <div class="subtitle">Leave Approval Portal</div>
+
+    <div class="info-box">
+        <b>Staff Name:</b> <span id="dispStaff">-</span><br>
+        <b>Branch:</b> <span id="dispBranch">-</span><br>
+        <b>Portal Access:</b> <span id="dispRole" style="color: #2980b9; font-weight: bold;">-</span>
+    </div>
+
+    <div id="actionArea" class="btn-group">
+        <!-- Buttons loaded dynamically -->
+    </div>
 </div>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const role = urlParams.get('role') ? urlParams.get('role').toLowerCase() : ''; 
-    const status = urlParams.get('status') ? urlParams.get('status').toLowerCase() : '';
+    const role = (urlParams.get('role') || 'cm').toLowerCase();
     const staff = urlParams.get('staff') || 'Staff';
     const branch = urlParams.get('branch') || 'Cineplex';
 
     const gmPhone = "601116316020"; 
     const githubBaseUrl = "https://george191919.github.io/leave-application/status.html";
 
-    var badge = document.getElementById('statusBadge');
-    var desc = document.getElementById('statusDesc');
+    document.getElementById('dispStaff').innerText = staff;
+    document.getElementById('dispBranch').innerText = branch;
+    document.getElementById('dispRole').innerText = (role === 'gm') ? "General Manager / HR" : "Cinema Manager";
+
     var actionArea = document.getElementById('actionArea');
 
     if (role === 'cm') {
-        if (status === 'recommended' || status === 'approved') {
-            badge.innerText = "Recommended by Cinema Manager";
-            badge.className = "status-badge approved";
-            desc.innerText = "Leave request for " + staff + " (" + branch + ") has been RECOMMENDED. Forwarding to General Manager / HR for Final Approval.";
+        // CINEMA MANAGER OPTIONS
+        var gmLink = githubBaseUrl + "?role=gm&staff=" + encodeURIComponent(staff) + "&branch=" + encodeURIComponent(branch);
+        
+        var approveStaffMsg = "Hello " + staff + ", your leave request for *" + branch + "* has been *APPROVED* by Cinema Manager. ✅";
+        var rejectStaffMsg = "Hello " + staff + ", your leave request for *" + branch + "* has been *REJECTED* by Cinema Manager. ❌";
+        
+        var gmMessage = "📄 *LEAVE APPLICATION (FORWARDED BY CM)*%0A%0A" +
+                        "• *Branch:* " + branch + "%0A" +
+                        "• *Staff Name:* " + staff + "%0A" +
+                        "• *CM Status:* RECOMMENDED ✅%0A%0A" +
+                        "⚡ *GENERAL MANAGER / HR ACTION LINK:*%0A" +
+                        "👉 " + gmLink;
 
-            var gmApproveLink = githubBaseUrl + "?role=gm&status=approved&staff=" + encodeURIComponent(staff) + "&branch=" + encodeURIComponent(branch);
-            var gmRejectLink = githubBaseUrl + "?role=gm&status=rejected&staff=" + encodeURIComponent(staff) + "&branch=" + encodeURIComponent(branch);
-
-            var gmMessage = "📄 *LEAVE APPLICATION (STEP 2: FINAL APPROVAL)*%0A%0A" +
-                            "• *Branch:* " + branch + "%0A" +
-                            "• *Staff:* " + staff + "%0A" +
-                            "• *Cinema Manager Status:* RECOMMENDED ✅%0A%0A" +
-                            "------------------------------------%0A" +
-                            "⚡ *GENERAL MANAGER / HR ACTION REQUIRED:*%0A%0A" +
-                            "✅ *FINAL APPROVE:* " + gmApproveLink + "%0A%0A" +
-                            "❌ *FINAL REJECT:* " + gmRejectLink;
-
-            actionArea.innerHTML = '<a class="btn-wa" href="https://api.whatsapp.com/send?phone=' + gmPhone + '&text=' + gmMessage + '">📲 Forward to General Manager / HR</a>';
-        } else {
-            badge.innerText = "Rejected by Cinema Manager";
-            badge.className = "status-badge rejected";
-            desc.innerText = "Leave request for " + staff + " (" + branch + ") has been REJECTED by Cinema Manager.";
-
-            var staffReplyMsg = "Hello " + staff + ", your leave request for " + branch + " has been REJECTED by Cinema Manager.";
-            actionArea.innerHTML = '<a class="btn-wa" href="https://api.whatsapp.com/send?text=' + encodeURIComponent(staffReplyMsg) + '">💬 Notify Staff via WhatsApp</a>';
-        }
+        actionArea.innerHTML = `
+            <a class="btn btn-approve" href="https://api.whatsapp.com/send?text=${encodeURIComponent(approveStaffMsg)}">
+                ✅ Approved - Send to Staff
+            </a>
+            <a class="btn btn-forward" href="https://api.whatsapp.com/send?phone=${gmPhone}&text=${gmMessage}">
+                📲 Send Application to General Manager
+            </a>
+            <a class="btn btn-reject" href="https://api.whatsapp.com/send?text=${encodeURIComponent(rejectStaffMsg)}">
+                ❌ Rejected
+            </a>
+        `;
     } else if (role === 'gm') {
-        if (status === 'approved') {
-            badge.innerText = "Final Status: Approved";
-            badge.className = "status-badge approved";
-            desc.innerText = "Leave application for " + staff + " (" + branch + ") has been APPROVED by General Manager / HR.";
-        } else {
-            badge.innerText = "Final Status: Rejected";
-            badge.className = "status-badge rejected";
-            desc.innerText = "Leave application for " + staff + " (" + branch + ") has been REJECTED by General Manager / HR.";
-        }
+        // GENERAL MANAGER / HR OPTIONS
+        var finalApproveMsg = "Hello " + staff + ", your leave application for *" + branch + "* has received *FINAL APPROVAL* from General Manager / HR. ✅%0A%0ABlockbuster Cineplexes";
+        var finalRejectMsg = "Hello " + staff + ", your leave application for *" + branch + "* has been *REJECTED* by General Manager / HR. ❌%0A%0ABlockbuster Cineplexes";
 
-        var finalReplyMsg = "Hello " + staff + ", your leave application for " + branch + " has been *" + status.toUpperCase() + "* by General Manager / HR.%0A%0ABlockbuster Cineplexes";
-        actionArea.innerHTML = '<a class="btn-wa" href="https://api.whatsapp.com/send?text=' + encodeURIComponent(finalReplyMsg) + '">💬 Send Final Decision to Staff</a>';
+        actionArea.innerHTML = `
+            <a class="btn btn-approve" href="https://api.whatsapp.com/send?text=${encodeURIComponent(finalApproveMsg)}">
+                ✅ Final Approve
+            </a>
+            <a class="btn btn-reject" href="https://api.whatsapp.com/send?text=${encodeURIComponent(finalRejectMsg)}">
+                ❌ Final Reject
+            </a>
+        `;
     }
 </script>
 

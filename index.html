@@ -7,48 +7,48 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
     * { box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; margin: 0; padding: 12px 8px; color: #f8fafc; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f4f8; margin: 0; padding: 12px 8px; color: #1e293b; }
     
-    .paper { background: #1e293b; width: 100%; max-width: 650px; margin: 0 auto; padding: 16px; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); border: 1px solid #334155; }
-    .form-container { width: 100%; border: 1px solid #475569; padding: 12px; border-radius: 8px; background: #0f172a; }
-    .header { text-align: center; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; margin-bottom: 14px; }
-    .doc-ref { font-size: 7.5pt; color: #94a3b8; }
-    .logo-title { font-size: 20pt; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin: 0; letter-spacing: 1px; }
-    .logo-sub { font-size: 8.5pt; font-weight: bold; letter-spacing: 2px; color: #ef4444; text-transform: uppercase; }
-    .form-title { font-size: 11pt; font-weight: bold; margin-top: 8px; background: #1e293b; color: #f8fafc; padding: 6px; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; border: 1px solid #334155; }
+    .paper { background: #ffffff; width: 100%; max-width: 650px; margin: 0 auto; padding: 16px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #cbd5e1; }
+    .form-container { width: 100%; border: 1px solid #94a3b8; padding: 12px; border-radius: 8px; background: #ffffff; }
+    .header { text-align: center; border-bottom: 2px solid #0284c7; padding-bottom: 10px; margin-bottom: 14px; }
+    .doc-ref { font-size: 7.5pt; color: #64748b; }
+    .logo-title { font-size: 20pt; font-weight: 800; color: #0284c7; text-transform: uppercase; margin: 0; letter-spacing: 1px; }
+    .logo-sub { font-size: 8.5pt; font-weight: bold; letter-spacing: 2px; color: #dc2626; text-transform: uppercase; }
+    .form-title { font-size: 11pt; font-weight: bold; margin-top: 8px; background: #f1f5f9; color: #0f172a; padding: 6px; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; border: 1px solid #cbd5e1; }
     
     .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 8.5pt; font-weight: 600; margin-bottom: 5px; color: #cbd5e1; }
+    .form-group label { display: block; font-size: 8.5pt; font-weight: 600; margin-bottom: 5px; color: #334155; }
     
     .row { display: flex; flex-wrap: wrap; gap: 10px; }
     .col { flex: 1; min-width: 140px; }
     
     input[type="text"], input[type="date"], input[type="number"], select, textarea {
-        width: 100%; padding: 10px; border: 1px solid #334155; border-radius: 6px; font-size: 9.5pt; font-family: inherit; background: #1e293b; color: #f8fafc; box-sizing: border-box; transition: all 0.2s;
+        width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 9.5pt; font-family: inherit; background: #f8fafc; color: #0f172a; box-sizing: border-box; transition: all 0.2s;
     }
-    input:focus, select:focus, textarea:focus { border-color: #38bdf8; outline: none; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
+    input:focus, select:focus, textarea:focus { border-color: #0284c7; outline: none; background: #ffffff; box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2); }
     textarea { resize: vertical; min-height: 50px; }
     
     .table-responsive { width: 100%; overflow-x: auto; margin: 12px 0; -webkit-overflow-scrolling: touch; }
     table.leave-table, table.approved-table { width: 100%; border-collapse: collapse; min-width: 320px; }
-    table.leave-table th, table.leave-table td, table.approved-table th, table.approved-table td { border: 1px solid #334155; padding: 6px 4px; text-align: center; font-size: 8.5pt; }
-    table.leave-table th, table.approved-table th { background: #1e293b; color: #38bdf8; font-weight: bold; }
+    table.leave-table th, table.leave-table td, table.approved-table th, table.approved-table td { border: 1px solid #cbd5e1; padding: 6px 4px; text-align: center; font-size: 8.5pt; }
+    table.leave-table th, table.approved-table th { background: #e2e8f0; color: #0284c7; font-weight: bold; }
     
-    canvas#sigCanvas { border: 1px dashed #64748b; background-color: #1e293b; cursor: crosshair; touch-action: none; width: 100%; height: 80px; border-radius: 6px; }
+    canvas#sigCanvas { border: 1px dashed #94a3b8; background-color: #f8fafc; cursor: crosshair; touch-action: none; width: 100%; height: 80px; border-radius: 6px; }
     .btn-clear { font-size: 8pt; padding: 4px 10px; background: #ef4444; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 4px; font-weight: bold; }
     
-    .attached-preview { margin-top: 10px; border: 1px dashed #475569; padding: 8px; text-align: center; background: #1e293b; border-radius: 6px; }
+    .attached-preview { margin-top: 10px; border: 1px dashed #94a3b8; padding: 8px; text-align: center; background: #f8fafc; border-radius: 6px; }
     .attached-preview img { max-width: 100%; max-height: 180px; display: none; margin: 6px auto 0 auto; border-radius: 4px; }
 
-    .approved-section { margin-top: 15px; border-top: 2px dashed #3b82f6; padding-top: 10px; text-align: left; }
-    .approved-title { font-size: 9.5pt; font-weight: bold; color: #22c55e; margin-bottom: 8px; text-transform: uppercase; }
+    .approved-section { margin-top: 15px; border-top: 2px dashed #0284c7; padding-top: 10px; text-align: left; }
+    .approved-title { font-size: 9.5pt; font-weight: bold; color: #16a34a; margin-bottom: 8px; text-transform: uppercase; }
 
-    .app-footer { width: 100%; max-width: 650px; margin: 14px auto; background: #1e293b; padding: 14px; border-radius: 12px; text-align: center; border: 1px solid #334155; }
+    .app-footer { width: 100%; max-width: 650px; margin: 14px auto; background: #ffffff; padding: 14px; border-radius: 12px; text-align: center; border: 1px solid #cbd5e1; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
     .btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
     .btn { color: white; border: none; padding: 12px 16px; font-size: 9.5pt; font-weight: bold; border-radius: 6px; cursor: pointer; flex: 1; min-width: 140px; transition: transform 0.1s; }
     .btn:active { transform: scale(0.98); }
-    .btn-wa { background-color: #22c55e; }
-    .btn-pdf { background-color: #ef4444; }
+    .btn-wa { background-color: #16a34a; }
+    .btn-pdf { background-color: #dc2626; }
 
     @media print {
         .app-footer, .btn-clear, .approved-section { display: none !important; }
@@ -158,11 +158,10 @@
         </div>
 
         <div class="attached-preview">
-            <span id="noFileMsg" style="color:#94a3b8; font-size:8pt;">No Document attached.</span>
+            <span id="noFileMsg" style="color:#64748b; font-size:8pt;">No Document attached.</span>
             <img id="previewImg" src="" alt="Attachment">
         </div>
 
-        <!-- Approved Leave History Section -->
         <div class="approved-section">
             <div class="approved-title">✅ Approved Leave Schedule</div>
             <div class="table-responsive">
@@ -175,7 +174,7 @@
                         </tr>
                     </thead>
                     <tbody id="approvedTableBody">
-                        <tr><td colspan="3" style="color:#94a3b8;">No approved leaves recorded.</td></tr>
+                        <tr><td colspan="3" style="color:#64748b;">No approved leaves recorded.</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -185,8 +184,8 @@
 
 <div class="app-footer">
     <div style="margin-bottom: 8px;">
-        <label style="font-size: 8.5pt; font-weight: bold; color: #cbd5e1;">📎 Attach MC / Document:</label>
-        <input type="file" id="fileAttachment" accept="image/*" onchange="previewFile()" style="font-size: 8.5pt; margin-top:4px; color: #94a3b8;">
+        <label style="font-size: 8.5pt; font-weight: bold; color: #334155;">📎 Attach MC / Document:</label>
+        <input type="file" id="fileAttachment" accept="image/*" onchange="previewFile()" style="font-size: 8.5pt; margin-top:4px; color: #475569;">
     </div>
 
     <div class="btn-group">
@@ -247,7 +246,7 @@
     var canvas = document.getElementById('sigCanvas');
     var ctx = canvas.getContext('2d');
     var isDrawing = false;
-    ctx.strokeStyle = "#38bdf8"; ctx.lineWidth = 2;
+    ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2;
 
     function resizeCanvas() {
         canvas.width = canvas.parentElement.clientWidth - 2;
@@ -315,7 +314,7 @@
                 tbody.innerHTML += `<tr>
                     <td><b>${item.staff}</b> (${item.branch})</td>
                     <td>${item.dates}</td>
-                    <td><span style="color:#22c55e; font-weight:bold;">${item.type}</span></td>
+                    <td><span style="color:#16a34a; font-weight:bold;">${item.type}</span></td>
                 </tr>`;
             });
         }

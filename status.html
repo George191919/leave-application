@@ -6,25 +6,24 @@
     <title>Leave Management Portal</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; padding: 20px 15px; background: #eef2f5; margin: 0; }
-        .card { background: white; border-radius: 12px; padding: 25px 20px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); box-sizing: border-box; }
-        .title { font-size: 15pt; font-weight: bold; color: #2c3e50; margin-bottom: 5px; text-transform: uppercase; }
-        .subtitle { font-size: 9.5pt; color: #7f8c8d; margin-bottom: 18px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; text-align: center; padding: 15px 10px; background: #f4f6f8; margin: 0; }
+        .card { background: white; border-radius: 10px; padding: 18px 14px; max-width: 420px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.08); box-sizing: border-box; }
+        .title { font-size: 14pt; font-weight: bold; color: #1a202c; text-transform: uppercase; margin-bottom: 4px; }
+        .subtitle { font-size: 8.5pt; color: #718096; margin-bottom: 14px; }
         
-        .info-box { background: #f8f9fa; border: 1.5px solid #e9ecef; border-radius: 8px; padding: 14px; text-align: left; margin-bottom: 18px; font-size: 10pt; color: #333; line-height: 1.6; }
+        .info-box { background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; text-align: left; margin-bottom: 14px; font-size: 9pt; color: #2d3748; line-height: 1.5; }
         
-        .btn-group { display: flex; flex-direction: column; gap: 11px; }
-        .btn { display: block; padding: 13px 15px; text-decoration: none; font-weight: bold; border-radius: 6px; font-size: 10.5pt; color: white; border: none; cursor: pointer; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .btn-group { display: flex; flex-direction: column; gap: 8px; }
+        .btn { display: block; padding: 11px 12px; text-decoration: none; font-weight: bold; border-radius: 5px; font-size: 9.5pt; color: white; border: none; cursor: pointer; text-align: center; }
         
         .btn-pdf-dl { background-color: #8e44ad; }
         .btn-approve { background-color: #27ae60; }
         .btn-forward { background-color: #2980b9; }
         .btn-reject { background-color: #e74c3c; }
 
-        /* Hidden Printable Paper */
-        #pdfRenderPaper { display: none; text-align: left; background: #fff; padding: 20px; border: 2px solid #2c3e50; font-size: 10pt; line-height: 1.5; }
-        #pdfRenderPaper table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        #pdfRenderPaper th, #pdfRenderPaper td { border: 1px solid #2c3e50; padding: 6px; text-align: center; }
+        #pdfRenderPaper { display: none; text-align: left; background: #fff; padding: 15px; border: 1.5px solid #2d3748; font-size: 9pt; line-height: 1.4; }
+        #pdfRenderPaper table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        #pdfRenderPaper th, #pdfRenderPaper td { border: 1px solid #cbd5e0; padding: 5px; text-align: center; }
     </style>
 </head>
 <body>
@@ -42,37 +41,34 @@
     </div>
 
     <div id="actionArea" class="btn-group">
-        <!-- Dynamic Buttons -->
+        <!-- Action Buttons Dynamic -->
     </div>
 </div>
 
-<!-- Hidden PDF Template for Manager Download -->
 <div id="pdfRenderPaper">
-    <div style="text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; margin-bottom: 15px;">
-        <h2 style="margin:0; font-size: 20pt; text-transform: uppercase;">Blockbuster Cineplexes</h2>
-        <h4 style="margin:0; color: #e74c3c; letter-spacing: 2px;">LEAVE APPLICATION FORM</h4>
+    <div style="text-align: center; border-bottom: 2px solid #2d3748; padding-bottom: 8px; margin-bottom: 12px;">
+        <h3 style="margin:0; font-size: 16pt; text-transform: uppercase;">Blockbuster Cineplexes</h3>
+        <h5 style="margin:0; color: #e53e3e; letter-spacing: 1px;">LEAVE APPLICATION FORM</h5>
     </div>
     <p><b>Branch:</b> <span id="pdfBranch"></span> | <b>Date:</b> <span id="pdfDate"></span></p>
-    <p><b>Staff Name:</b> <span id="pdfStaff"></span> | <b>Employee ID:</b> <span id="pdfID"></span></p>
+    <p><b>Staff Name:</b> <span id="pdfStaff"></span> | <b>ID:</b> <span id="pdfID"></span></p>
     <p><b>Contact No:</b> <span id="pdfTel"></span></p>
-    <p><b>Contact Address While on Leave:</b> <span id="pdfAddr"></span></p>
-    <p><b>Reason for Leave:</b> <span id="pdfReason"></span></p>
+    <p><b>Address While Leave:</b> <span id="pdfAddr"></span></p>
+    <p><b>Reason:</b> <span id="pdfReason"></span></p>
     
     <table>
         <thead>
             <tr>
-                <th>Leave Type</th>
+                <th>Type</th>
                 <th>From</th>
                 <th>To</th>
                 <th>Days</th>
             </tr>
         </thead>
-        <tbody id="pdfTableBody">
-            <!-- Dynamic Leave Rows -->
-        </tbody>
+        <tbody id="pdfTableBody"></tbody>
     </table>
     
-    <p style="margin-top: 15px;"><b>Expected Re-joining Date:</b> <span id="pdfRejoining"></span></p>
+    <p style="margin-top: 12px;"><b>Re-joining Date:</b> <span id="pdfRejoining"></span></p>
 </div>
 
 <script>
@@ -100,7 +96,6 @@
     document.getElementById('dispReason').innerText = reason;
     document.getElementById('dispRole').innerText = (role === 'gm') ? "General Manager / HR" : "Cinema Manager";
 
-    // Populate PDF Template
     document.getElementById('pdfBranch').innerText = branch;
     document.getElementById('pdfDate').innerText = date;
     document.getElementById('pdfStaff').innerText = staff;
@@ -115,7 +110,7 @@
     
     function addRow(type, val) {
         if(val) {
-            var parts = val.split('|');
+            var parts = val.split('~');
             tbody.innerHTML += `<tr><td>${type}</td><td>${parts[0] || '-'}</td><td>${parts[1] || '-'}</td><td>${parts[2] || '-'}</td></tr>`;
         }
     }
@@ -123,14 +118,14 @@
     addRow('Medical Leave', mc);
     addRow('Emergency Leave', el);
     if(!al && !mc && !el) {
-        tbody.innerHTML = '<tr><td colspan="4">No specific leave details provided.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4">No leave details provided.</td></tr>';
     }
 
     function downloadFilledPDF() {
         var element = document.getElementById('pdfRenderPaper');
         element.style.display = 'block';
         var opt = {
-            margin:       10,
+            margin:       8,
             filename:     'Completed_Leave_Form_' + staff + '.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2 },
@@ -147,15 +142,15 @@
         var currentParams = window.location.search.replace('role=cm', 'role=gm');
         var gmLink = githubBaseUrl + currentParams;
         
-        var approveStaffMsg = "Hello " + staff + ", your leave request for *" + branch + "* has been *APPROVED* by Cinema Manager. ✅";
-        var rejectStaffMsg = "Hello " + staff + ", your leave request for *" + branch + "* has been *REJECTED* by Cinema Manager. ❌";
+        var approveStaffMsg = "Hello " + staff + ", your leave request for " + branch + " has been APPROVED by Cinema Manager. ✅";
+        var rejectStaffMsg = "Hello " + staff + ", your leave request for " + branch + " has been REJECTED by Cinema Manager. ❌";
         
-        var gmMessage = "📄 *LEAVE APPLICATION (FORWARDED BY CM)*%0A%0A" +
-                        "• *Branch:* " + branch + "%0A" +
-                        "• *Staff Name:* " + staff + "%0A" +
-                        "• *CM Status:* RECOMMENDED ✅%0A%0A" +
-                        "⚡ *GENERAL MANAGER / HR ACTION & PDF LINK:*%0A" +
-                        "👉 " + gmLink;
+        var gmMessage = "LEAVE APPLICATION (FORWARDED BY CM)\n\n" +
+                        "• Branch: " + branch + "\n" +
+                        "• Staff: " + staff + "\n" +
+                        "• CM Status: RECOMMENDED ✅\n\n" +
+                        "GENERAL MANAGER / HR LINK:\n" +
+                        gmLink;
 
         actionArea.innerHTML = `
             <button class="btn btn-pdf-dl" onclick="downloadFilledPDF()">
@@ -164,16 +159,16 @@
             <a class="btn btn-approve" href="https://api.whatsapp.com/send?text=${encodeURIComponent(approveStaffMsg)}">
                 ✅ Approved - Send to Staff
             </a>
-            <a class="btn btn-forward" href="https://api.whatsapp.com/send?phone=${gmPhone}&text=${gmMessage}">
-                📲 Send Application to General Manager
+            <a class="btn btn-forward" href="https://api.whatsapp.com/send?phone=${gmPhone}&text=${encodeURIComponent(gmMessage)}">
+                📲 Send Application to GM
             </a>
             <a class="btn btn-reject" href="https://api.whatsapp.com/send?text=${encodeURIComponent(rejectStaffMsg)}">
                 ❌ Rejected
             </a>
         `;
     } else if (role === 'gm') {
-        var finalApproveMsg = "Hello " + staff + ", your leave application for *" + branch + "* has received *FINAL APPROVAL* from General Manager / HR. ✅%0A%0ABlockbuster Cineplexes";
-        var finalRejectMsg = "Hello " + staff + ", your leave application for *" + branch + "* has been *REJECTED* by General Manager / HR. ❌%0A%0ABlockbuster Cineplexes";
+        var finalApproveMsg = "Hello " + staff + ", your leave application for " + branch + " has received FINAL APPROVAL from General Manager / HR. ✅";
+        var finalRejectMsg = "Hello " + staff + ", your leave application for " + branch + " has been REJECTED by General Manager / HR. ❌";
 
         actionArea.innerHTML = `
             <button class="btn btn-pdf-dl" onclick="downloadFilledPDF()">

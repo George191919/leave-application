@@ -6,15 +6,16 @@
     <title>Leave Management Portal</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; padding: 30px 15px; background: #eef2f5; margin: 0; }
-        .card { background: white; border-radius: 12px; padding: 25px 20px; max-width: 440px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); box-sizing: border-box; }
-        .title { font-size: 14pt; font-weight: bold; color: #2c3e50; margin-bottom: 5px; text-transform: uppercase; }
-        .subtitle { font-size: 9pt; color: #7f8c8d; margin-bottom: 20px; }
+        .card { background: white; border-radius: 12px; padding: 25px 20px; max-width: 450px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); box-sizing: border-box; }
+        .title { font-size: 15pt; font-weight: bold; color: #2c3e50; margin-bottom: 5px; text-transform: uppercase; }
+        .subtitle { font-size: 9.5pt; color: #7f8c8d; margin-bottom: 18px; }
         
-        .info-box { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 12px; text-align: left; margin-bottom: 20px; font-size: 9.5pt; color: #333; line-height: 1.6; }
+        .info-box { background: #f8f9fa; border: 1.5px solid #e9ecef; border-radius: 8px; padding: 14px; text-align: left; margin-bottom: 18px; font-size: 10pt; color: #333; line-height: 1.6; }
         
-        .btn-group { display: flex; flex-direction: column; gap: 10px; }
-        .btn { display: block; padding: 12px 15px; text-decoration: none; font-weight: bold; border-radius: 6px; font-size: 10pt; color: white; border: none; cursor: pointer; text-align: center; }
+        .btn-group { display: flex; flex-direction: column; gap: 11px; }
+        .btn { display: block; padding: 13px 15px; text-decoration: none; font-weight: bold; border-radius: 6px; font-size: 10.5pt; color: white; border: none; cursor: pointer; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         
+        .btn-pdf-dl { background-color: #8e44ad; }
         .btn-approve { background-color: #27ae60; }
         .btn-forward { background-color: #2980b9; }
         .btn-reject { background-color: #e74c3c; }
@@ -24,7 +25,7 @@
 
 <div class="card">
     <div class="title">Blockbuster Cineplexes</div>
-    <div class="subtitle">Leave Approval Portal</div>
+    <div class="subtitle">Leave Approval & Review Portal</div>
 
     <div class="info-box">
         <b>Staff Name:</b> <span id="dispStaff">-</span><br>
@@ -45,6 +46,7 @@
 
     const gmPhone = "601116316020"; 
     const githubBaseUrl = "https://george191919.github.io/leave-application/status.html";
+    const mainFormUrl = "https://george191919.github.io/leave-application/";
 
     document.getElementById('dispStaff').innerText = staff;
     document.getElementById('dispBranch').innerText = branch;
@@ -63,10 +65,13 @@
                         "• *Branch:* " + branch + "%0A" +
                         "• *Staff Name:* " + staff + "%0A" +
                         "• *CM Status:* RECOMMENDED ✅%0A%0A" +
-                        "⚡ *GENERAL MANAGER / HR ACTION LINK:*%0A" +
+                        "⚡ *GENERAL MANAGER / HR ACTION & PDF LINK:*%0A" +
                         "👉 " + gmLink;
 
         actionArea.innerHTML = `
+            <a class="btn btn-pdf-dl" href="${mainFormUrl}" target="_blank">
+                📥 View / Download Application Form PDF
+            </a>
             <a class="btn btn-approve" href="https://api.whatsapp.com/send?text=${encodeURIComponent(approveStaffMsg)}">
                 ✅ Approved - Send to Staff
             </a>
@@ -83,6 +88,9 @@
         var finalRejectMsg = "Hello " + staff + ", your leave application for *" + branch + "* has been *REJECTED* by General Manager / HR. ❌%0A%0ABlockbuster Cineplexes";
 
         actionArea.innerHTML = `
+            <a class="btn btn-pdf-dl" href="${mainFormUrl}" target="_blank">
+                📥 View / Download Application Form PDF
+            </a>
             <a class="btn btn-approve" href="https://api.whatsapp.com/send?text=${encodeURIComponent(finalApproveMsg)}">
                 ✅ Final Approve
             </a>

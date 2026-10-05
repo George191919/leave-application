@@ -6,34 +6,35 @@
 <title>Blockbuster Cineplexes - Leave Application Form</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 15px; color: #333; }
-    .paper { background: #fff; width: 210mm; min-height: 297mm; margin: 0 auto; padding: 10mm 12mm; box-shadow: 0 0 10px rgba(0,0,0,0.15); box-sizing: border-box; }
-    .form-container { width: 100%; border: 1.5px solid #000; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 10px; color: #333; }
+    .paper { background: #fff; width: 100%; max-width: 800px; margin: 0 auto; padding: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.15); }
+    .form-container { width: 100%; border: 1.5px solid #000; overflow-x: auto; }
     .header { text-align: center; padding: 10px; position: relative; }
     .doc-ref { position: absolute; right: 10px; top: 10px; font-size: 8pt; }
-    .logo-title { font-size: 22pt; font-weight: bold; font-style: italic; margin: 0; }
+    .logo-title { font-size: 20pt; font-weight: bold; font-style: italic; margin: 0; }
     .logo-sub { font-size: 8pt; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; }
     .form-title { font-size: 11pt; font-weight: bold; margin-top: 5px; text-transform: uppercase; }
     
-    table { width: 100%; border-collapse: collapse; margin-top: -1px; }
-    td, th { border: 1px solid #000; padding: 5px; font-size: 8.5pt; vertical-align: middle; }
+    table { width: 100%; border-collapse: collapse; margin-top: -1px; min-width: 500px; }
+    td, th { border: 1px solid #000; padding: 6px 4px; font-size: 8.5pt; vertical-align: middle; }
     th { background: #f2f2f2; text-align: center; }
     
     input[type="text"], input[type="date"], input[type="number"], select, textarea {
-        width: 100%; border: none; outline: none; font-size: 8.5pt; background: transparent; box-sizing: border-box; font-family: inherit;
+        width: 100%; border: none; outline: none; font-size: 9pt; background: transparent; font-family: inherit;
     }
     select { cursor: pointer; font-weight: bold; }
     textarea { resize: none; height: 40px; }
     
-    canvas#sigCanvas { border: 1px dashed #777; background-color: #fcfcfc; cursor: crosshair; touch-action: none; }
-    .btn-clear { font-size: 7pt; padding: 2px 5px; background: #e74c3c; color: #fff; border: none; border-radius: 3px; cursor: pointer; }
+    canvas#sigCanvas { border: 1px dashed #777; background-color: #fcfcfc; cursor: crosshair; touch-action: none; width: 100%; max-width: 280px; }
+    .btn-clear { font-size: 8pt; padding: 3px 8px; background: #e74c3c; color: #fff; border: none; border-radius: 3px; cursor: pointer; margin-top: 3px; }
     
     .attached-preview { margin-top: 10px; border: 1px dashed #000; padding: 8px; text-align: center; background: #fafafa; }
-    .attached-preview img { max-width: 100%; max-height: 150mm; display: none; margin: 0 auto; border: 1px solid #ddd; }
+    .attached-preview img { max-width: 100%; max-height: 200px; display: none; margin: 0 auto; border: 1px solid #ddd; }
 
-    .app-footer { max-width: 210mm; margin: 20px auto 0 auto; background: #fff; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .app-footer { width: 100%; max-width: 800px; margin: 15px auto 0 auto; background: #fff; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     .btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
-    .btn { color: white; border: none; padding: 12px 20px; font-size: 10pt; font-weight: bold; border-radius: 6px; cursor: pointer; text-decoration: none; }
+    .btn { color: white; border: none; padding: 12px 18px; font-size: 10pt; font-weight: bold; border-radius: 6px; cursor: pointer; text-decoration: none; flex: 1; min-width: 160px; }
     .btn-wa { background-color: #25D366; }
     .btn-pdf { background-color: #e74c3c; }
 
@@ -56,8 +57,8 @@
 
         <table>
             <tr>
-                <td style="width:12%;">Branch:</td>
-                <td style="width:38%;">
+                <td style="width:15%;">Branch:</td>
+                <td style="width:35%;">
                     <select id="cinemaBranch">
                         <option value="Perling Mall">Blockbuster Cineplexes - Perling Mall</option>
                         <option value="Pelangi Leisure Mall">Blockbuster Cineplexes - Pelangi Leisure Mall</option>
@@ -128,7 +129,7 @@
 
         <table>
             <tr>
-                <td style="width:50%; height:80px;">
+                <td style="width:50%; height:90px;">
                     <div><b>Digital Signature (Sign below):</b></div>
                     <canvas id="sigCanvas" width="280" height="50"></canvas><br>
                     <button type="button" class="btn-clear" onclick="clearSignature()">Clear</button>
@@ -216,20 +217,18 @@
     }
 
     function sendToCinemaManager() {
-        // Updated Manager WhatsApp Phone Numbers
-        var cmPhonePerling = "60187795621";   // Perling Mall Cinema Manager
-        var cmPhonePelangi = "601164117015";  // Pelangi Leisure Mall Cinema Manager
+        var cmPhonePerling = "60187795621";   
+        var cmPhonePelangi = "601164117015";  
 
         var branch = document.getElementById('cinemaBranch').value;
         var name = document.getElementById('staffName').value || 'Staff';
         var id = document.getElementById('staffID').value || 'N/A';
         var reason = document.getElementById('leaveReason').value || 'N/A';
 
-        // Select Manager based on branch
         var targetPhone = (branch === "Perling Mall") ? cmPhonePerling : cmPhonePelangi;
 
-        // GitHub Pages Status URL dynamically set to current domain path
-        var githubBaseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + "/status.html";
+        var currentUrl = window.location.href;
+        var githubBaseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/')) + "/status.html";
 
         var approveLink = githubBaseUrl + "?role=cm&status=Recommended&staff=" + encodeURIComponent(name) + "&branch=" + encodeURIComponent(branch);
         var rejectLink = githubBaseUrl + "?role=cm&status=Rejected&staff=" + encodeURIComponent(name) + "&branch=" + encodeURIComponent(branch);

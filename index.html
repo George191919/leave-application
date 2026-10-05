@@ -227,11 +227,11 @@
 
         var targetPhone = (branch === "Perling Mall") ? cmPhonePerling : cmPhonePelangi;
 
-        var currentUrl = window.location.href;
-        var githubBaseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/')) + "/status.html";
+        // Correct direct link generation to status.html
+        var githubBaseUrl = "https://george191919.github.io/leave-application/status.html";
 
-        var approveLink = githubBaseUrl + "?role=cm&status=Recommended&staff=" + encodeURIComponent(name) + "&branch=" + encodeURIComponent(branch);
-        var rejectLink = githubBaseUrl + "?role=cm&status=Rejected&staff=" + encodeURIComponent(name) + "&branch=" + encodeURIComponent(branch);
+        var approveLink = githubBaseUrl + "?role=cm&status=recommended&staff=" + encodeURIComponent(name) + "&branch=" + encodeURIComponent(branch);
+        var rejectLink = githubBaseUrl + "?role=cm&status=rejected&staff=" + encodeURIComponent(name) + "&branch=" + encodeURIComponent(branch);
 
         generatePDF();
 
